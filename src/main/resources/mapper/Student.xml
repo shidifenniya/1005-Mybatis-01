@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 该文件是用于进行数据库表的操作声明相当于dao层中的实现类,例如以前写的StudentDaoImpl,
+    里面定义一些列操作数据库表的sql语句
+    namespace:声明该操作文件对外提供的接口类路径是谁,相当于StudentDao接口 -->
+
+<mapper namespace="com.xiaohei.mapper.StudentMapper">
+
+    <!-- 查询标签,执行查询语句,常用属性:
+         id:唯一标识该操作的名称,对应接口(StudnetDao)中的某个方法名
+         parameterType(parameterMap):定义sql语句中需要的参数,即条件查询中的参数,
+                        对应接口中方法的参数列表,注意接口中的参数只能有一个,
+                        对于多个参数可以封装到一个pojo类中
+         resultType(resultMap):返回结果声明,对应一个map,以key,value的形式返回数据-->
+    <select id="selectAll"
+            resultType="com.xiaohei.domain.StudentNexus">
+
+          SELECT * FROM StudentNexus
+
+    </select>
+
+
+
+    <select id="limitSelect"
+            parameterType="com.xiaohei.domain.PageBean"
+            resultType="com.xiaohei.domain.StudentNexus">
+
+        SELECT * FROM StudentNexus
+        WHERE studentName LIKE '%${parameter.studentName}%'
+        limit #{startIndex},#{pageSize}
+
+    </select>
+
+    <select id="getTotalRecord"
+            parameterType="com.xiaohei.domain.PageBean"
+            resultType="java.lang.Integer">
+        SELECT COUNT(id) FROM StudentNexus
+        WHERE studentName LIKE '%${parameter.studentName}%'
+    </select>
+
+</mapper>
